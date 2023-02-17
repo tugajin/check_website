@@ -23,7 +23,20 @@ def get_website_diff(curr_website, prev_website):
         if 'content="?st=1' in str_line or 'value="' in str_line or "index.php" in str_line \
             or "shop.php" in str_line or "data:{stock_lst:stock_lst," in str_line \
             or '{"isTestserver":false,"isLcJimdoCom":false' in str_line \
-            or 'class="maker_count">' in str_line:
+            or 'class="maker_count">' in str_line \
+            or "style='font-size:8pt;color:" in str_line \
+            or str_line == '+ <td' or str_line == '- <td'\
+            or str_line == '+ width=20' or str_line == '- width=20'\
+            or str_line == '+ align=center' or str_line == '- align=center'\
+            or str_line == "- style='font-size:8pt;color:#666666;'>16</td>"\
+            or str_line == "+ style='font-size:8pt;color:#666666;'>16</td>"\
+            or str_line == "- style='font-size:8pt;color:#666666;'>17</td>"\
+            or str_line == "+ style='font-size:8pt;color:#666666;'>17</td>"\
+            or str_line == "+ style='font-size:8pt;color:#FFFFFF'>16</td>"\
+            or str_line == "- style='font-size:8pt;color:#FFFFFF'>16</td>"\
+            or str_line == "+ style='font-size:8pt;color:#FFFFFF'>17</td>"\
+            or str_line == "- style='font-size:8pt;color:#FFFFFF'>17</td>"\
+            or 'class="ken">' in str_line:
             continue 
         if str_line.startswith(('+', '-')) :
             result += str_line + "\n"
@@ -66,9 +79,9 @@ def check_update(info):
     if diff != "":
         print("update")
         #print(diff)
-        send_mail(name, diff, encode)
         save_website(prev_content, name+"_old")
         save_website(content, name)
+        send_mail(name, diff, encode)
     else:
         print("same")
 
